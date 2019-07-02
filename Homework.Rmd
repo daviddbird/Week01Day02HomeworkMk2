@@ -1,0 +1,157 @@
+---
+title: "CodeClan Day 2 Homework"
+output: html_notebook
+---
+
+
+## 1. Part 1
+
+1. Create a vector called `stock_prices` with the following data points: 23, 27, 23, 21, 34, 24, 25, 30, 37, 30.
+```{r}
+stock_prices <- c(23, 27, 23, 21, 34, 24, 25, 30, 37, 30)
+```
+ 
+ 
+1. Create a vector called `day_of_week`, which repeats Monday to Friday twice. i.e. ‘Monday’, ‘Tuesday’, ‘Wednesday’, ‘Thursday’, ‘Friday’, ‘Monday’, ‘Tuesday’, ‘Wednesday’, ‘Thursday’, ‘Friday’.
+```{r}
+day_of_week <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+```
+ 
+ 
+2. Create a vector called `day_of_week_factor`, which has the same data as `day_of_week`, but as a factor.
+```{r}
+day_of_week_factor <- factor(day_of_week, levels = c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday"), ordered = TRUE)
+```
+ 
+ 
+2. Created a vector called `named_stock_prices`, which is stock prices, named with days of the week.
+```{r}
+names(stock_prices) <- day_of_week
+named_stock_prices <- stock_prices
+named_stock_prices
+```
+ 
+ 
+3. Make a data frame called `stock_data` with the stock price and day of the week information in it, and View the result.
+```{r}
+stock_data <- data.frame(stock_prices, day_of_week_factor)
+class (stock_data)
+stock_data
+```
+ 
+ 
+4. Make a matrix called `stock_matrix` with 2 columns and 5 rows, so that the stock prices for one week are the first column, and the stock prices for the second week are the second column.
+```{r}
+stock_matrix <- matrix(stock_prices, byrow = FALSE, nrow = 5)
+stock_matrix
+```
+ 
+ 
+5. Make a list called `stock_list` with named elements, that has the individual vectors of `stock_prices` and `day_of_week` along with the matrix you made in question 4.
+```{r}
+stock_list <- list(stock_prices, day_of_week, stock_matrix)
+stock_list
+```
+ 
+ 
+## 2. Part 2 
+
+1. Select the 4th, 5th and 6th stock prices from `stock_prices`.
+```{r}
+stock_prices[c(4, 5, 6)]
+```
+
+
+1. Select the stock prices greater than 30 from `stock_prices`.
+```{r}
+stock_prices[stock_prices > 30]
+```
+
+2. Select the `day_of_week` column from the `stock_data` data frame.
+```{r}
+stock_data[, 2]
+```
+
+
+2. Select the rows of the `stock_data` data frame where the `stock_prices` is less than 25.
+```{r}
+subset(stock_data, subset = stock_prices < 25)
+```
+
+3. Select the 1st column of the matrix
+```{r}
+stock_matrix[, 1]
+```
+
+
+3. Select the 3rd row of the matrix
+```{r}
+stock_matrix[3, ]
+```
+
+
+3. Select the 3rd element in the 1st row of the matrix *(should this be 3rd element in the 1st column?)*
+```{r}
+stock_matrix[3, 1]
+```
+
+4. Select the matrix stock_matrix from `stock_list`.
+```{r}
+stock_list[[3]]
+```
+
+## 3. Extension
+
+Download the `tidyquant` library.
+
+Use it to get stock prices from a company of your choice from the current year. You’ll need to look up the help file to do this.
+
+Edit the data frame so only columns are date and closing.
+
+Subset to find the rows where closing price is higher than average.
+
+```{r include=FALSE}
+install.packages("tidyquant")
+```
+
+```{r include=FALSE}
+library(tidyquant)
+```
+
+Investigating help.
+```{r}
+browseVignettes(package = "tidyquant")
+```
+
+```{r}
+tq_index_options()
+```
+
+```{r}
+tq_index("DOW")
+```
+
+Edit the data frame so only columns are date and closing.
+```{r}
+GS_prices  <- tq_get("GS", get = "stock.prices", from = " 2019-01-01")
+str(GS_prices)
+keeps <- c("date", "close")
+GS_prices_two_columns <- GS_prices[keeps]
+GS_prices_two_columns
+```
+
+```{r}
+mean(GS_prices_two_columns$close)
+```
+
+Subset to find the rows where closing price is higher than average.
+```{r}
+subset(GS_prices_two_columns, subset = GS_prices_two_columns$close > mean(GS_prices_two_columns$close))
+```
+
+
+
+
+
+
+
